@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "529709474311",
+    "project_id": "duhis-61ae9",
+    "storage_bucket": "duhis-61ae9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:529709474311:android:78442bf920f55e7e4480a2",
+        "android_client_info": {
+          "package_name": "com.example.duhis"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtkHh4y-b9t6I5jV34fJqAYMpEq5Z-M4g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Brand Colors -->
+    <color name="duhis_green">#1B8A5A</color>
+    <color name="duhis_green_dark">#136B44</color>
+    <color name="duhis_green_light">#E8F5EE</color>
+    <color name="duhis_green_medium">#4CAF85</color>
+
+    <color name="background_color">#F5F5F5</color>
+    <color name="primary_color">#6200EE</color>
+    <color name="text_primary_color">#212121</color>
+    <color name="text_secondary_color">#757575</color>
+    <color name="divider_color">#E0E0E0</color>
+    <color name="error_color">#D32F2F</color>
+
+
+    <!-- Accent -->
+    <color name="duhis_blue">#1565C0</color>
+    <color name="duhis_blue_light">#E3F2FD</color>
+    <color name="duhis_orange">#F57C00</color>
+    <color name="duhis_orange_light">#FFF3E0</color>
+    <color name="duhis_red">#C62828</color>
+    <color name="duhis_red_light">#FFEBEE</color>
+
+    <!-- Neutral -->
+    <color name="white">#FFFFFF</color>
+    <color name="background">#F4F7F5</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="text_primary">#1A2E1A</color>
+    <color name="text_secondary">#5A7A5A</color>
+    <color name="text_hint">#9EB59E</color>
+    <color name="divider">#E0EBE0</color>
+    <color name="shadow">#1A000000</color>
+
+    <!-- Status -->
+    <color name="status_pending">#F57C00</color>
+    <color name="status_approved">#1B8A5A</color>
+    <color name="status_cancelled">#C62828</color>
+    <color name="status_completed">#1565C0</color>
+
+    <!-- Notification Badge -->
+    <color name="badge_red">#E53935</color>
+    <color name="bottom_nav_color">#FF6200EE</color>
+    <color name="unread_background">#E8F5E9</color>
+    <color name="featured_color">#FF9800</color>
+    <color name="preview_background">#F5F5F5</color>
+
+</resources>

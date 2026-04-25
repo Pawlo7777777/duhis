@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DUHIS</string>
+    <string name="app_full_name">Dagohoy Unified Health Information System</string>
+    <string name="app_tagline">Your Health, Our Priority</string>
+
+    <!-- Auth -->
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="logout">Logout</string>
+    <string name="email">Email Address</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="full_name">Full Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="date_of_birth">Date of Birth</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="no_account">Don\'t have an account? Register</string>
+    <string name="have_account">Already have an account? Login</string>
+    <string name="logo">DUHIS Logo</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_appointments">Appointments</string>
+    <string name="nav_health_info">Health Info</string>
+    <string name="nav_emergency">Emergency</string>
+    <string name="nav_profile">Profile</string>
+
+    <!-- Appointments -->
+    <string name="book_appointment">Book Appointment</string>
+    <string name="my_appointments">My Appointments</string>
+    <string name="appointment_date">Appointment Date</string>
+    <string name="appointment_time">Appointment Time</string>
+    <string name="appointment_type">Type of Consultation</string>
+    <string name="appointment_notes">Additional Notes</string>
+    <string name="status_pending">Pending</string>
+    <string name="status_approved">Approved</string>
+    <string name="status_cancelled">Cancelled</string>
+    <string name="status_completed">Completed</string>
+    <string name="cancel_appointment">Cancel Appointment</string>
+
+    <!-- Health Info -->
+    <string name="health_information">Health Information</string>
+    <string name="search_health_info">Search health topics…</string>
+
+    <!-- Emergency -->
+    <string name="emergency_contacts">Emergency Contacts</string>
+    <string name="call_now">Call Now</string>
+    <string name="barangay_health_center">Barangay Health Center</string>
+    <string name="municipal_hospital">Municipal Hospital</string>
+    <string name="ambulance">Ambulance</string>
+    <string name="bfp">Bureau of Fire Protection</string>
+    <string name="pnp">Philippine National Police</string>
+
+    <!-- Profile -->
+    <string name="my_profile">My Profile</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="address">Address</string>
+    <string name="gender">Gender</string>
+    <string name="blood_type">Blood Type</string>
+    <string name="allergies">Known Allergies</string>
+
+    <!-- Notifications -->
+    <string name="notifications">Notifications</string>
+    <string name="no_notifications">No notifications yet</string>
+    <string name="mark_all_read">Mark all as read</string>
+
+    <!-- Common -->
+    <string name="loading">Loading…</string>
+    <string name="error_occurred">An error occurred. Please try again.</string>
+    <string name="no_internet">No internet connection.</string>
+    <string name="success">Success</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="submit">Submit</string>
+    <string name="back">Back</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="ok">OK</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="view_all">View All</string>
+    <string name="good_morning">Good Morning</string>
+    <string name="good_afternoon">Good Afternoon</string>
+    <string name="good_evening">Good Evening</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

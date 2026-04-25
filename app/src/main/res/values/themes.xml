@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Theme.DUHIS" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/duhis_green</item>
+        <item name="colorPrimaryDark">@color/duhis_green_dark</item>
+        <item name="colorPrimaryVariant">@color/duhis_green_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/duhis_blue</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:colorBackground">@color/background</item>
+        <item name="android:windowBackground">@color/background</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="android:statusBarColor">@color/duhis_green_dark</item>
+        <item name="android:navigationBarColor">@color/white</item>
+        <item name="materialButtonStyle">@style/Widget.DUHIS.Button</item>
+        <item name="textInputStyle">@style/Widget.DUHIS.TextInput</item>
+    </style>
+
+    <style name="Theme.DUHIS.Splash" parent="Theme.DUHIS">
+        <item name="android:statusBarColor">@color/duhis_green</item>
+        <item name="android:windowBackground">@color/duhis_green</item>
+        <item name="android:windowFullscreen">false</item>
+    </style>
+
+    <!-- Button styles -->
+    <style name="Widget.DUHIS.Button" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/duhis_green</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="cornerRadius">12dp</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">14dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.05</item>
+        <item name="android:elevation">4dp</item>
+    </style>
+
+    <style name="Widget.DUHIS.Button.Outline" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="strokeColor">@color/duhis_green</item>
+        <item name="android:textColor">@color/duhis_green</item>
+        <item name="cornerRadius">12dp</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">14dp</item>
+    </style>
+
+    <style name="Widget.DUHIS.Button.Text" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/duhis_green</item>
+    </style>
+
+    <style name="Widget.DUHIS.Button.Danger" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/duhis_red</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="cornerRadius">12dp</item>
+    </style>
+
+    <!-- TextInput styles -->
+    <style name="Widget.DUHIS.TextInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/duhis_green</item>
+        <item name="hintTextColor">@color/duhis_green</item>
+        <item name="boxCornerRadiusTopStart">12dp</item>
+        <item name="boxCornerRadiusTopEnd">12dp</item>
+        <item name="boxCornerRadiusBottomStart">12dp</item>
+        <item name="boxCornerRadiusBottomEnd">12dp</item>
+        <item name="startIconTint">@color/duhis_green</item>
+        <item name="endIconTint">@color/duhis_green</item>
+    </style>
+
+    <!-- Card style -->
+    <style name="Widget.DUHIS.Card" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="cardBackgroundColor">@color/surface</item>
+        <item name="contentPadding">16dp</item>
+    </style>
+
+    <!-- Toolbar -->
+    <style name="Widget.DUHIS.Toolbar" parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="android:background">@color/duhis_green</item>
+        <item name="titleTextColor">@color/white</item>
+        <item name="navigationIconTint">@color/white</item>
+    </style>
+
+    <!-- Text styles -->
+    <style name="TextAppearance.DUHIS.Heading" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.DUHIS.Subheading" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <style name="TextAppearance.DUHIS.Body" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textColor">@color/text_primary</item>]
+    </style>
+
+    <!-- Status chip styles -->
+    <style name="Widget.DUHIS.Chip.Pending" parent="Widget.MaterialComponents.Chip.Action">
+        <item name="android:textColor">@color/status_pending</item>
+        <item name="android:background">@color/duhis_orange_light</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+    </style>
+
+    <!-- BottomNav -->
+    <style name="Widget.DUHIS.BottomNav" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="itemIconTint">@color/bottom_nav_color</item>
+        <item name="itemTextColor">@color/bottom_nav_color</item>
+        <item name="android:background">@color/white</item>
+        <item name="elevation">8dp</item>
+    </style>
+
+</resources>

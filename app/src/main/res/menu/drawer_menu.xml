@@ -38,4 +38,11 @@
             android:iconTint="@color/duhis_red" />
     </group>
 
+    <group>
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_pending"
+            android:title="Logout" />
+    </group>
+
 </menu>

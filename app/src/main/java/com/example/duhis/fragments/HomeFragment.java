@@ -18,7 +18,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.duhis.activities.LoginActivity;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
@@ -163,6 +165,8 @@ public class HomeFragment extends Fragment {
             } else if (id == R.id.nav_emergency) {
                 navigateToEmergency();
                 return true;
+            } else if (id == R.id.nav_logout) {
+                confirmLogout();
             }
             return false;
         });
@@ -268,5 +272,22 @@ public class HomeFragment extends Fragment {
                             "Failed to load health info: " + e.getMessage());
                     Log.d("EERRRRRROORRR", e.getMessage());
                 });
+    }
+    private void confirmLogout() {
+        UIUtils.showConfirmDialog(
+                requireContext(),
+                "Logout",
+                "Are you sure you want to logout?",
+                "Logout",
+                () -> {
+                    fb.setUserOffline(session.getUid());
+                    FirebaseAuth.getInstance().signOut();
+                    session.logout();
+
+                    Intent i = new Intent(requireActivity(), LoginActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);
+                }
+        );
     }
 }

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    android:background="@color/duhis_green_medium">
 
     <!-- Scrollable Content -->
     <ScrollView
@@ -28,9 +28,19 @@
 
                 <!-- Simple colored circle as logo placeholder -->
                 <View
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/circle_background" />
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:backgroundTint="@color/duhis_green"
+                    android:background="@drawable/ic_health_logo" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="DUHIS"
+                    android:textSize="32sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/duhis_green_dark" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -47,7 +57,7 @@
                     android:layout_marginTop="8dp"
                     android:text="Join DUHIS today"
                     android:textSize="14sp"
-                    android:textColor="#757575" />
+                    android:textColor="@color/black" />
 
             </LinearLayout>
 
@@ -63,13 +73,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:background="#4BC790"
                     android:padding="20dp">
 
                     <!-- Full Name Field -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilName"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
+                        app:startIconDrawable="@drawable/ic_person"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
                         app:endIconMode="clear_text">
@@ -87,10 +99,11 @@
                     <!-- Email Field -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilEmail"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
+                        app:startIconDrawable="@drawable/ic_email"
                         app:endIconMode="clear_text">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -106,10 +119,11 @@
                     <!-- Phone Number Field -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilPhone"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
+                        app:startIconDrawable="@drawable/ic_phone"
                         app:endIconMode="clear_text">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -125,10 +139,11 @@
                     <!-- Password Field -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilPassword"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
+                        app:startIconDrawable="@drawable/ic_lock"
                         app:endIconMode="password_toggle">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -144,10 +159,11 @@
                     <!-- Confirm Password Field -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilConfirmPassword"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="24dp"
+                        app:startIconDrawable="@drawable/ic_lock"
                         app:endIconMode="password_toggle">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -168,7 +184,7 @@
                         android:text="Register"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        android:backgroundTint="#2196F3" />
+                        android:backgroundTint="@color/duhis_green_medium" />
 
                     <!-- Login Link -->
                     <LinearLayout
@@ -183,7 +199,7 @@
                             android:layout_height="wrap_content"
                             android:text="Already have an account? "
                             android:textSize="14sp"
-                            android:textColor="#757575" />
+                            android:textColor="@color/black" />
 
                         <TextView
                             android:id="@+id/tvLogin"
@@ -192,7 +208,7 @@
                             android:text="Login"
                             android:textSize="14sp"
                             android:textStyle="bold"
-                            android:textColor="#2196F3"
+                            android:textColor="@color/black"
                             android:clickable="true"
                             android:focusable="true" />
 

@@ -18,6 +18,9 @@ import com.example.duhis.adapters.EmergencyContactAdapter;
 import com.example.duhis.models.EmergencyContact;
 import com.example.duhis.utils.FirebaseHelper;
 import com.example.duhis.utils.UIUtils;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,25 +51,34 @@ public class EmergencyFragment extends Fragment {
     }
 
     private void loadContacts() {
-        FirebaseHelper.getInstance().emergencyContacts()
-                .orderBy("sortOrder")
-                .get()
-                .addOnSuccessListener(snap -> {
-                    contactList.clear();
-                    for (com.google.firebase.firestore.DocumentSnapshot doc : snap.getDocuments()) {
-                        EmergencyContact c = doc.toObject(EmergencyContact.class);
-                        if (c != null) { c.setContactId(doc.getId()); contactList.add(c); }
+        FirebaseHelper.getInstance(requireContext()).emergencyContacts()
+                .orderByChild("sortOrder")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        contactList.clear();
+                        for (DataSnapshot child : snapshot.getChildren()) {
+                            EmergencyContact c = child.getValue(EmergencyContact.class);
+                            if (c != null) {
+                                c.setContactId(child.getKey());
+                                contactList.add(c);
+                            }
+                        }
+                        if (contactList.isEmpty()) addDefaultContacts();
+                        adapter.notifyDataSetChanged();
                     }
-                    if (contactList.isEmpty()) addDefaultContacts();
-                    adapter.notifyDataSetChanged();
-                })
-                .addOnFailureListener(e -> addDefaultContacts());
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        addDefaultContacts();
+                    }
+                });
     }
 
-    /** Seed default contacts if Firestore is empty */
+    /** Seed default contacts if Realtime DB is empty */
     private void addDefaultContacts() {
         contactList.clear();
-        contactList.add(new EmergencyContact("Barangay Health Center", "Dagohoy BHC", "09XXXXXXXXX", "health_center", 1));
+        contactList.add(new EmergencyContact("Barangay Health Center", "Dagohoy BHC",             "09XXXXXXXXX", "health_center", 1));
         contactList.add(new EmergencyContact("Municipal Hospital",     "Dagohoy Municipal Hospital", "09XXXXXXXXX", "hospital",      2));
         contactList.add(new EmergencyContact("Ambulance",              "Emergency Ambulance",        "09XXXXXXXXX", "ambulance",     3));
         contactList.add(new EmergencyContact("BFP",                    "Bureau of Fire Protection",  "09XXXXXXXXX", "fire",          4));

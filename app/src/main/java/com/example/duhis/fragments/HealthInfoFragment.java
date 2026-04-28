@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.firestore.Query;
 import com.example.duhis.R;
 import com.example.duhis.activities.HealthInfoDetailActivity;
@@ -26,6 +27,7 @@ import com.example.duhis.models.HealthInfo;
 import com.example.duhis.utils.FirebaseHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -78,16 +80,20 @@ public class HealthInfoFragment extends Fragment {
     }
 
     private void loadHealthInfo() {
-        FirebaseHelper.getInstance().healthInfo()
-                .orderBy("createdAt", Query.Direction.DESCENDING)
+        FirebaseHelper.getInstance(requireContext()).healthInfo()
+                .orderByChild("createdAt")
                 .get()
                 .addOnSuccessListener(snap -> {
                     swipeRefresh.setRefreshing(false);
                     allList.clear();
-                    for (com.google.firebase.firestore.DocumentSnapshot doc : snap.getDocuments()) {
-                        HealthInfo h = doc.toObject(HealthInfo.class);
-                        if (h != null) { h.setInfoId(doc.getId()); allList.add(h); }
+                    for (DataSnapshot doc : snap.getChildren()) {
+                        HealthInfo h = doc.getValue(HealthInfo.class);
+                        if (h != null) {
+                            h.setInfoId(doc.getKey());
+                            allList.add(h);
+                        }
                     }
+                    Collections.reverse(allList); // newest first
                     filterList(etSearch.getText().toString());
                 })
                 .addOnFailureListener(e -> swipeRefresh.setRefreshing(false));

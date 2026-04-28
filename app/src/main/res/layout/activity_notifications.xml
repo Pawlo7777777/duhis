@@ -11,7 +11,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/primary_color"
+        android:background="@color/duhis_green_dark"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:titleTextColor="@color/white"
         app:navigationIcon="@drawable/ic_arrow_back" />
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:text="Mark all as read"
             android:textSize="14sp"
-            android:textColor="@color/primary_color"
+            android:textColor="@color/black"
             android:padding="8dp"
             android:clickable="true"
             android:focusable="true"

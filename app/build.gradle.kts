@@ -42,13 +42,14 @@ dependencies {
     implementation(libs.google.firebase.database)
     implementation(libs.google.firebase.messaging)
     implementation(libs.androidx.swiperefreshlayout)
-
+    implementation(libs.cloudinary)
     // Add these two lines
     implementation(libs.circleimageview)
     implementation(libs.glide)
+    implementation(libs.google.firebase.storage)
 
     // Glide annotation processor (required)
-    annotationProcessor(libs.glide)  // Use the same dependency for compiler
+    annotationProcessor(libs.glide.compiler)  // Use the same dependency for compiler
     implementation(libs.androidx.cardview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

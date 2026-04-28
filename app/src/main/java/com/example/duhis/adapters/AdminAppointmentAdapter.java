@@ -42,7 +42,8 @@ public class AdminAppointmentAdapter extends RecyclerView.Adapter<AdminAppointme
         h.tvName.setText(a.getUserName());
         h.tvPhone.setText(a.getUserPhone());
         h.tvType.setText(a.getConsultationType());
-        h.tvDateTime.setText(a.getDate() + "  •  " + a.getTime());
+        h.tvDate.setText(a.getDate());   // ← was combined into tvDateTime
+        h.tvTime.setText(a.getTime());   // ← now its own field
         h.tvStatus.setText(a.getStatus());
 
         if (a.getNotes() != null && !a.getNotes().isEmpty()) {
@@ -91,16 +92,18 @@ public class AdminAppointmentAdapter extends RecyclerView.Adapter<AdminAppointme
     @Override public int getItemCount() { return list.size(); }
 
     static class VH extends RecyclerView.ViewHolder {
-        TextView tvName, tvPhone, tvType, tvDateTime, tvStatus, tvNotes;
+        TextView tvName, tvPhone, tvType, tvDate, tvTime, tvStatus, tvNotes;
         Button btnApprove, btnCancel, btnComplete;
+
         VH(View v) {
             super(v);
-            tvName     = v.findViewById(R.id.tvName);
-            tvPhone    = v.findViewById(R.id.tvPhone);
-            tvType     = v.findViewById(R.id.tvType);
-            tvDateTime = v.findViewById(R.id.tvDateTime);
-            tvStatus   = v.findViewById(R.id.tvStatus);
-            tvNotes    = v.findViewById(R.id.tvNotes);
+            tvName      = v.findViewById(R.id.tvPatientName);      // ← was tvName
+            tvPhone     = v.findViewById(R.id.tvPatientPhone);     // ← was tvPhone
+            tvType      = v.findViewById(R.id.tvConsultationType); // ← was tvType
+            tvDate      = v.findViewById(R.id.tvDate);
+            tvTime      = v.findViewById(R.id.tvTime);             // ← now separate
+            tvStatus    = v.findViewById(R.id.tvStatus);
+            tvNotes     = v.findViewById(R.id.tvNotes);
             btnApprove  = v.findViewById(R.id.btnApprove);
             btnCancel   = v.findViewById(R.id.btnCancel);
             btnComplete = v.findViewById(R.id.btnComplete);

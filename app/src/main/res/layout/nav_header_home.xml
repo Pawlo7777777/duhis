@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/duhis_green"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="48dp"
+    android:paddingBottom="24dp">
+
+    <!-- Avatar Circle -->
+    <FrameLayout
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:background="@drawable/ic_patient"
+        android:layout_marginBottom="12dp">
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/navUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User Name"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/navUserEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="user@email.com"
+        android:textSize="13sp"
+        android:textColor="#CCFFFFFF"
+        android:layout_marginTop="2dp" />
+
+</LinearLayout>

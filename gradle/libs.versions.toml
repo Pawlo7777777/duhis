@@ -7,6 +7,7 @@ appcompat = "1.7.0"
 material = "1.12.0"
 activity = "1.9.0"
 constraintlayout = "2.1.4"
+cloudinary = "2.3.1"
 firebaseBom = "33.1.1"
 playServicesAuth = "21.2.0"
 circleimageview = "3.1.0"
@@ -20,6 +21,7 @@ firebaseFirestore = "26.2.0"
 firebaseAuth = "24.0.1"
 firebaseDatabase = "22.0.1"
 firebaseMessaging = "25.0.1"
+firebaseStorage = "22.0.1"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -57,6 +59,8 @@ google-firebase-firestore = { group = "com.google.firebase", name = "firebase-fi
 google-firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 google-firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
 google-firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
+google-firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
+cloudinary = { group = "com.cloudinary", name = "cloudinary-android", version.ref = "cloudinary" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

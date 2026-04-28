@@ -9,6 +9,7 @@ import android.os.Looper;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.duhis.MainActivity;
+import com.example.duhis.R;
 import com.example.duhis.utils.NotificationHelper;
 import com.example.duhis.utils.SessionManager;
 
@@ -20,7 +21,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_splash);
         NotificationHelper.createNotificationChannel(this);
 
         new Handler(Looper.getMainLooper()).postDelayed(() -> {

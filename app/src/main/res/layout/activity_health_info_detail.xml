@@ -10,7 +10,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/primary_color"
+        android:background="@color/duhis_green_dark"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:titleTextColor="@color/white"
         app:navigationIcon="@drawable/ic_arrow_back" />
@@ -40,7 +40,6 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/img_health_placeholder" />
 
-                <!-- Gradient Overlay for better text readability -->
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
@@ -132,7 +131,7 @@
                         android:id="@+id/tvContent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Health information content goes here. This will be a detailed article about the health topic."
+                        android:text="Health information content goes here."
                         android:textSize="16sp"
                         android:textColor="@color/text_primary_color"
                         android:lineSpacingExtra="6dp" />
@@ -145,8 +144,8 @@
 
     </ScrollView>
 
-    <!-- Progress Overlay -->
-    <View
+    <!-- Progress Overlay — FrameLayout, not View, so it can hold children -->
+    <FrameLayout
         android:id="@+id/progressOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -154,10 +153,11 @@
         android:visibility="gone">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:gravity="center">
 
             <ProgressBar
                 android:layout_width="48dp"
@@ -174,6 +174,6 @@
 
         </LinearLayout>
 
-    </View>
+    </FrameLayout>
 
 </RelativeLayout>

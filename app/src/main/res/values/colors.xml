@@ -5,6 +5,7 @@
     <color name="duhis_green_dark">#136B44</color>
     <color name="duhis_green_light">#E8F5EE</color>
     <color name="duhis_green_medium">#4CAF85</color>
+    <color name="black">#000</color>
 
     <color name="background_color">#F5F5F5</color>
     <color name="primary_color">#6200EE</color>
@@ -12,6 +13,8 @@
     <color name="text_secondary_color">#757575</color>
     <color name="divider_color">#E0E0E0</color>
     <color name="error_color">#D32F2F</color>
+    <!-- Add these to your colors.xml -->
+    <color name="primary_dark">#3700B3</color>
 
 
     <!-- Accent -->
@@ -44,5 +47,11 @@
     <color name="unread_background">#E8F5E9</color>
     <color name="featured_color">#FF9800</color>
     <color name="preview_background">#F5F5F5</color>
-
+    <color name="splash_bg">#042C53</color>
+    <color name="logo_card_bg">#0D3D6B</color>
+    <color name="logo_icon_tint">#B5D4F4</color>
+    <color name="splash_text_primary">#E6F1FB</color>
+    <color name="splash_text_secondary">#85B7EB</color>
+    <color name="splash_text_hint">#3D6490</color>
+    <color name="splash_divider">#1A4A70</color>
 </resources>

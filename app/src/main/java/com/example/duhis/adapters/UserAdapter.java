@@ -1,5 +1,5 @@
 package com.example.duhis.adapters;
-
+import com.google.android.material.card.MaterialCardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,36 +40,33 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         User user = users.get(position);
+        if (user == null) return;
 
-        if (user != null) {
-            holder.tvName.setText(user.getFullName());
-            holder.tvEmail.setText(user.getEmail());
+        holder.tvName.setText(user.getFullName());
+        holder.tvEmail.setText(user.getEmail());
 
-            String phone = user.getPhoneNumber();
-            holder.tvPhone.setText(phone != null && !phone.isEmpty() ? phone : "No phone");
+        String phone = user.getPhoneNumber();
+        holder.tvPhone.setText(phone != null && !phone.isEmpty() ? phone : "No phone");
 
-            // Set role badge
-            if ("admin".equals(user.getRole())) {
-                holder.tvRole.setText("Admin");
-                holder.tvRole.setBackgroundResource(R.drawable.ic_role_admin);
-            } else {
-                holder.tvRole.setText("User");
-                holder.tvRole.setBackgroundResource(R.drawable.ic_role_user);
-            }
-
-            // Set date
-            if (user.getCreatedAt() != null) {
-                holder.tvDate.setText(dateFormat.format(user.getCreatedAt().toDate()));
-            } else {
-                holder.tvDate.setText("N/A");
-            }
-
-            holder.cardUser.setOnClickListener(v -> {
-                if (onUserClick != null) {
-                    onUserClick.accept(user);
-                }
-            });
+        // Role badge
+        if ("admin".equals(user.getRole())) {
+            holder.tvRole.setText("Admin");
+            holder.tvRole.setBackgroundResource(R.drawable.bg_category_prevention);
+        } else {
+            holder.tvRole.setText("User");
+            holder.tvRole.setBackgroundResource(R.drawable.ic_role_user);
         }
+
+        // Date — wrap long in Date
+        if (user.getCreatedAt() > 0) {
+            holder.tvDate.setText(dateFormat.format(new java.util.Date(user.getCreatedAt())));
+        } else {
+            holder.tvDate.setText("N/A");
+        }
+
+        holder.cardUser.setOnClickListener(v -> {
+            if (onUserClick != null) onUserClick.accept(user);
+        });
     }
 
     @Override
@@ -78,7 +75,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        CardView cardUser;
+        com.google.android.material.card.MaterialCardView cardUser;
         TextView tvName, tvEmail, tvPhone, tvRole, tvDate;
         ImageView ivAvatar;
 
@@ -86,11 +83,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             super(itemView);
             cardUser = itemView.findViewById(R.id.cardUser);
             ivAvatar = itemView.findViewById(R.id.ivAvatar);
-            tvName = itemView.findViewById(R.id.tvName);
-            tvEmail = itemView.findViewById(R.id.tvEmail);
-            tvPhone = itemView.findViewById(R.id.tvPhone);
-            tvRole = itemView.findViewById(R.id.tvRole);
-            tvDate = itemView.findViewById(R.id.tvDate);
+            tvName   = itemView.findViewById(R.id.tvName);
+            tvEmail  = itemView.findViewById(R.id.tvEmail);
+            tvPhone  = itemView.findViewById(R.id.tvPhone);
+            tvRole   = itemView.findViewById(R.id.tvRole);
+            tvDate   = itemView.findViewById(R.id.tvDate);
         }
     }
 }

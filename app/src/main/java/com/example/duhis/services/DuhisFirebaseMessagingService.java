@@ -53,7 +53,7 @@ public class DuhisFirebaseMessagingService extends FirebaseMessagingService {
         Map<String, Object> update = new HashMap<>();
         update.put("fcmToken", token);
         FirebaseFirestore.getInstance()
-                .collection(FirebaseHelper.COL_USERS)
+                .collection(FirebaseHelper.RTDB_USERS)
                 .document(uid)
                 .update(update)
                 .addOnFailureListener(e -> Log.e(TAG, "Failed to save token", e));

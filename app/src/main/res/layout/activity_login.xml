@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="@color/background_color">
+    android:background="@color/duhis_green_medium">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -14,6 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:background="@color/duhis_green_medium"
             android:padding="24dp">
 
             <!-- Logo and Header -->
@@ -28,6 +29,7 @@
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
+                    app:tint="@color/duhis_green_dark"
                     android:src="@drawable/ic_health_logo"
                     android:contentDescription="@string/logo" />
 
@@ -38,7 +40,7 @@
                     android:text="DUHIS"
                     android:textSize="32sp"
                     android:textStyle="bold"
-                    android:textColor="@color/primary_color" />
+                    android:textColor="@color/duhis_green_dark" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -46,7 +48,7 @@
                     android:layout_marginTop="8dp"
                     android:text="Dagohoy Unified Health Information System"
                     android:textSize="14sp"
-                    android:textColor="@color/text_secondary_color"
+                    android:textColor="@color/duhis_green_dark"
                     android:gravity="center"
                     android:textAlignment="center" />
 
@@ -64,6 +66,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:background="#4BC790"
                     android:padding="20dp">
 
                     <TextView
@@ -80,7 +83,7 @@
                         android:layout_height="wrap_content"
                         android:text="Sign in to continue"
                         android:textSize="14sp"
-                        android:textColor="@color/text_secondary_color"
+                        android:textColor="@color/black"
                         android:layout_marginBottom="24dp" />
 
                     <!-- Email Field -->
@@ -131,7 +134,7 @@
                         android:layout_gravity="end"
                         android:text="Forgot Password?"
                         android:textSize="12sp"
-                        android:textColor="@color/primary_color"
+                        android:textColor="@color/black"
                         android:padding="8dp"
                         android:clickable="true"
                         android:focusable="true"
@@ -146,7 +149,7 @@
                         android:text="Login"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        android:backgroundTint="@color/primary_color"
+                        android:backgroundTint="@color/duhis_green_medium"
                         android:layout_marginBottom="16dp" />
 
                     <!-- Register Link -->
@@ -161,7 +164,7 @@
                             android:layout_height="wrap_content"
                             android:text="Don't have an account? "
                             android:textSize="14sp"
-                            android:textColor="@color/text_secondary_color" />
+                            android:textColor="@color/black" />
 
                         <TextView
                             android:id="@+id/tvRegister"
@@ -170,7 +173,7 @@
                             android:text="Register"
                             android:textSize="14sp"
                             android:textStyle="bold"
-                            android:textColor="@color/primary_color"
+                            android:textColor="@color/black"
                             android:clickable="true"
                             android:focusable="true" />
 

@@ -92,7 +92,7 @@
     </style>
 
     <style name="TextAppearance.DUHIS.Body" parent="TextAppearance.MaterialComponents.Body1">
-        <item name="android:textColor">@color/text_primary</item>]
+        <item name="android:textColor">@color/text_primary</item>
     </style>
 
     <!-- Status chip styles -->

@@ -1,10 +1,8 @@
 package com.example.duhis;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -39,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
 
         // Initialize session and FirebaseHelper with context
-        session = new SessionManager(this);
+        session = new SessionManager( this);
         fb = FirebaseHelper.getInstance(this);  // Pass context here
 
         bottomNav = findViewById(R.id.bottomNav);
@@ -67,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             loadFragment(new HomeFragment());
         }
+
     }
 
     private void setupBottomNav() {

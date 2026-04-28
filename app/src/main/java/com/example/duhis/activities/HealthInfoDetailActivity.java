@@ -48,19 +48,20 @@ public class HealthInfoDetailActivity extends AppCompatActivity {
 
     private void loadInfo(String infoId) {
         progressOverlay.setVisibility(View.VISIBLE);
-        FirebaseHelper.getInstance().healthInfo().document(infoId).get()
-                .addOnSuccessListener(doc -> {
+        FirebaseHelper.getInstance(this).healthInfo().child(infoId).get()
+                .addOnSuccessListener(snap -> {
                     progressOverlay.setVisibility(View.GONE);
-                    if (!doc.exists()) return;
-                    HealthInfo info = doc.toObject(HealthInfo.class);
+                    if (!snap.exists()) return;
+
+                    HealthInfo info = snap.getValue(HealthInfo.class);
                     if (info == null) return;
 
                     tvTitle.setText(info.getTitle());
                     tvCategory.setText(info.getCategory());
                     tvContent.setText(info.getContent());
 
-                    if (info.getCreatedAt() != null) {
-                        tvDate.setText(UIUtils.formatDate(info.getCreatedAt().toDate()));
+                    if (info.getCreatedAt() != 0) {
+                        tvDate.setText(UIUtils.formatDate(new java.util.Date(info.getCreatedAt())));
                     }
 
                     if (info.getImageUrl() != null && !info.getImageUrl().isEmpty()) {

@@ -14,7 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.Timestamp;
+import com.google.firebase.database.DataSnapshot;
 import com.example.duhis.R;
 import com.example.duhis.models.Notification;
 import com.example.duhis.utils.FirebaseHelper;
@@ -39,20 +39,16 @@ public class SendNotificationActivity extends AppCompatActivity {
     private FirebaseHelper fb;
 
     private static final String[] NOTIFICATION_TYPES = {
-            "General Announcement",
-            "Health Alert",
-            "Reminder",
-            "Update",
-            "Emergency"
+            "General Announcement", "Health Alert", "Reminder", "Update", "Emergency"
     };
 
     private static final Map<String, String> TYPE_MAP = new HashMap<>();
     static {
         TYPE_MAP.put("General Announcement", Notification.TYPE_GENERAL);
-        TYPE_MAP.put("Health Alert", Notification.TYPE_HEALTH_ALERT);
-        TYPE_MAP.put("Reminder", Notification.TYPE_APPOINTMENT);
-        TYPE_MAP.put("Update", Notification.TYPE_GENERAL);
-        TYPE_MAP.put("Emergency", Notification.TYPE_HEALTH_ALERT);
+        TYPE_MAP.put("Health Alert",         Notification.TYPE_HEALTH_ALERT);
+        TYPE_MAP.put("Reminder",             Notification.TYPE_APPOINTMENT);
+        TYPE_MAP.put("Update",               Notification.TYPE_GENERAL);
+        TYPE_MAP.put("Emergency",            Notification.TYPE_HEALTH_ALERT);
     }
 
     @Override
@@ -60,7 +56,7 @@ public class SendNotificationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_notification);
 
-        fb = FirebaseHelper.getInstance();
+        fb = FirebaseHelper.getInstance(this); // ← pass context
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -79,27 +75,25 @@ public class SendNotificationActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        tilTitle = findViewById(R.id.tilTitle);
-        tilMessage = findViewById(R.id.tilMessage);
-        tilType = findViewById(R.id.tilType);
-        etTitle = findViewById(R.id.etTitle);
-        etMessage = findViewById(R.id.etMessage);
-        actvType = findViewById(R.id.actvType);
-        rgAudience = findViewById(R.id.rgAudience);
-        rbAllUsers = findViewById(R.id.rbAllUsers);
+        tilTitle       = findViewById(R.id.tilTitle);
+        tilMessage     = findViewById(R.id.tilMessage);
+        tilType        = findViewById(R.id.tilType);
+        etTitle        = findViewById(R.id.etTitle);
+        etMessage      = findViewById(R.id.etMessage);
+        actvType       = findViewById(R.id.actvType);
+        rgAudience     = findViewById(R.id.rgAudience);
+        rbAllUsers     = findViewById(R.id.rbAllUsers);
         rbSpecificUser = findViewById(R.id.rbSpecificUser);
-        tilUserEmail = findViewById(R.id.tilUserEmail);
-        etUserEmail = findViewById(R.id.etUserEmail);
-        btnSend = findViewById(R.id.btnSend);
-        progressOverlay = findViewById(R.id.progressOverlay);
-        tvPreview = findViewById(R.id.tvPreview);
+        tilUserEmail   = findViewById(R.id.tilUserEmail);
+        etUserEmail    = findViewById(R.id.etUserEmail);
+        btnSend        = findViewById(R.id.btnSend);
+        progressOverlay= findViewById(R.id.progressOverlay);
+        tvPreview      = findViewById(R.id.tvPreview);
     }
 
     private void setupTypeDropdown() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_dropdown_item_1line, NOTIFICATION_TYPES);
-        actvType.setAdapter(adapter);
-
+        actvType.setAdapter(new ArrayAdapter<>(
+                this, android.R.layout.simple_dropdown_item_1line, NOTIFICATION_TYPES));
         actvType.setOnItemClickListener((parent, view, position, id) -> updatePreview());
     }
 
@@ -118,69 +112,46 @@ public class SendNotificationActivity extends AppCompatActivity {
 
     private void setupPreview() {
         android.text.TextWatcher watcher = new android.text.TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                updatePreview();
-            }
-            @Override
-            public void afterTextChanged(android.text.Editable s) {}
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) { updatePreview(); }
+            @Override public void afterTextChanged(android.text.Editable s) {}
         };
-
         etTitle.addTextChangedListener(watcher);
         etMessage.addTextChangedListener(watcher);
     }
 
     private void updatePreview() {
-        String title = etTitle.getText() != null ? etTitle.getText().toString() : "";
-        String message = etMessage.getText() != null ? etMessage.getText().toString() : "";
+        String title    = etTitle.getText() != null ? etTitle.getText().toString() : "";
+        String message  = etMessage.getText() != null ? etMessage.getText().toString() : "";
         String audience = rbSpecificUser.isChecked() ? "Specific User" : "All Users";
 
-        String preview = "📧 Preview:\n\n";
-        preview += "Title: " + (title.isEmpty() ? "[No title]" : title) + "\n";
-        preview += "Message: " + (message.isEmpty() ? "[No message]" : message) + "\n";
-        preview += "Audience: " + audience + "\n";
-        preview += "Type: " + (actvType.getText().toString().isEmpty() ? "[Not selected]" : actvType.getText().toString());
-
-        tvPreview.setText(preview);
+        tvPreview.setText("📧 Preview:\n\n" +
+                "Title: "    + (title.isEmpty()   ? "[No title]"    : title)   + "\n" +
+                "Message: "  + (message.isEmpty() ? "[No message]"  : message) + "\n" +
+                "Audience: " + audience + "\n" +
+                "Type: "     + (actvType.getText().toString().isEmpty() ? "[Not selected]" : actvType.getText().toString()));
     }
 
     private void sendNotification() {
-        String title = etTitle.getText() != null ? etTitle.getText().toString().trim() : "";
-        String message = etMessage.getText() != null ? etMessage.getText().toString().trim() : "";
+        String title       = etTitle.getText() != null ? etTitle.getText().toString().trim() : "";
+        String message     = etMessage.getText() != null ? etMessage.getText().toString().trim() : "";
         String typeDisplay = actvType.getText() != null ? actvType.getText().toString().trim() : "";
 
-        tilTitle.setError(null);
-        tilMessage.setError(null);
-        tilType.setError(null);
-
+        tilTitle.setError(null); tilMessage.setError(null); tilType.setError(null);
         boolean valid = true;
-        if (title.isEmpty()) {
-            tilTitle.setError("Title is required");
-            valid = false;
-        }
-        if (message.isEmpty()) {
-            tilMessage.setError("Message is required");
-            valid = false;
-        }
-        if (typeDisplay.isEmpty()) {
-            tilType.setError("Select notification type");
-            valid = false;
-        }
+
+        if (title.isEmpty())       { tilTitle.setError("Title is required");           valid = false; }
+        if (message.isEmpty())     { tilMessage.setError("Message is required");       valid = false; }
+        if (typeDisplay.isEmpty()) { tilType.setError("Select notification type");     valid = false; }
 
         if (rbSpecificUser.isChecked()) {
             String userEmail = etUserEmail.getText() != null ? etUserEmail.getText().toString().trim() : "";
-            if (userEmail.isEmpty()) {
-                tilUserEmail.setError("Enter user email");
-                valid = false;
-            }
+            if (userEmail.isEmpty()) { tilUserEmail.setError("Enter user email");      valid = false; }
         }
 
         if (!valid) return;
 
         showProgress(true);
-
         String notificationType = TYPE_MAP.getOrDefault(typeDisplay, Notification.TYPE_GENERAL);
 
         if (rbAllUsers.isChecked()) {
@@ -193,34 +164,37 @@ public class SendNotificationActivity extends AppCompatActivity {
     private void sendToAllUsers(String title, String message, String type) {
         fb.users().get()
                 .addOnSuccessListener(snap -> {
-                    if (snap.isEmpty()) {
+                    if (!snap.exists() || snap.getChildrenCount() == 0) {
                         showProgress(false);
                         UIUtils.showToast(this, "No users found");
                         return;
                     }
 
-                    int totalUsers = snap.size();
+                    long totalUsers = snap.getChildrenCount();
                     int[] successCount = {0};
 
-                    for (com.google.firebase.firestore.DocumentSnapshot doc : snap.getDocuments()) {
-                        String userId = doc.getId();
+                    for (DataSnapshot doc : snap.getChildren()) {
+                        String userId = doc.getKey();
+
                         Notification notif = new Notification(title, message, type);
                         notif.setTargetUserId(userId);
                         notif.setRead(false);
-                        notif.setCreatedAt(Timestamp.now());
+                        // createdAt set automatically in constructor via System.currentTimeMillis()
 
-                        fb.notifications().add(notif)
-                                .addOnSuccessListener(ref -> {
+                        String key = fb.notifications().push().getKey();
+                        fb.notifications().child(key).setValue(notif)
+                                .addOnSuccessListener(unused -> {
+                                    // Increment unread count
+                                    fb.unreadCounts(userId).get().addOnSuccessListener(snap2 -> {
+                                        Long current = snap2.getValue(Long.class);
+                                        fb.unreadCounts(userId).setValue(current != null ? current + 1 : 1);
+                                    });
                                     successCount[0]++;
-                                    if (successCount[0] == totalUsers) {
-                                        finishWithSuccess(totalUsers);
-                                    }
+                                    if (successCount[0] == totalUsers) finishWithSuccess((int) totalUsers);
                                 })
                                 .addOnFailureListener(e -> {
                                     successCount[0]++;
-                                    if (successCount[0] == totalUsers) {
-                                        finishWithSuccess(totalUsers);
-                                    }
+                                    if (successCount[0] == totalUsers) finishWithSuccess((int) totalUsers);
                                 });
                     }
                 })
@@ -233,30 +207,33 @@ public class SendNotificationActivity extends AppCompatActivity {
     private void sendToSpecificUser(String title, String message, String type) {
         String userEmail = etUserEmail.getText() != null ? etUserEmail.getText().toString().trim() : "";
 
+        // Query users by email field
         fb.users()
-                .whereEqualTo("email", userEmail)
+                .orderByChild("email")
+                .equalTo(userEmail)
                 .get()
                 .addOnSuccessListener(snap -> {
-                    if (snap.isEmpty()) {
+                    if (!snap.exists() || snap.getChildrenCount() == 0) {
                         showProgress(false);
                         tilUserEmail.setError("No user found with this email");
                         return;
                     }
 
-                    String userId = snap.getDocuments().get(0).getId();
+                    // Get the first matched user's key
+                    DataSnapshot userSnap = snap.getChildren().iterator().next();
+                    String userId = userSnap.getKey();
+
                     Notification notif = new Notification(title, message, type);
                     notif.setTargetUserId(userId);
                     notif.setRead(false);
-                    notif.setCreatedAt(Timestamp.now());
 
-                    fb.notifications().add(notif)
-                            .addOnSuccessListener(ref -> {
-                                // Update unread count
+                    String key = fb.notifications().push().getKey();
+                    fb.notifications().child(key).setValue(notif)
+                            .addOnSuccessListener(unused -> {
                                 fb.unreadCounts(userId).get().addOnSuccessListener(snap2 -> {
                                     Long current = snap2.getValue(Long.class);
                                     fb.unreadCounts(userId).setValue(current != null ? current + 1 : 1);
                                 });
-
                                 finishWithSuccess(1);
                             })
                             .addOnFailureListener(e -> {

@@ -10,7 +10,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/primary_color"
+        android:background="@color/duhis_green_dark"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:titleTextColor="@color/white"
         app:navigationIcon="@drawable/ic_arrow_back" />
@@ -35,7 +35,7 @@
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="@color/primary_color">
+                app:cardBackgroundColor="@color/duhis_green_medium">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -81,7 +81,7 @@
                     <!-- Date Field -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilDate"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
@@ -89,7 +89,7 @@
                         app:endIconMode="custom"
                         app:endIconDrawable="@drawable/ic_calendar_today"
                         app:endIconContentDescription="Select Date"
-                        app:endIconTint="@color/primary_color">
+                        app:endIconTint="@color/black">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etDate"
@@ -105,7 +105,7 @@
                     <!-- Time Field -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilTime"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
@@ -113,7 +113,7 @@
                         app:endIconMode="custom"
                         app:endIconDrawable="@drawable/ic_access_time"
                         app:endIconContentDescription="Select Time"
-                        app:endIconTint="@color/primary_color">
+                        app:endIconTint="@color/black">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etTime"
@@ -129,7 +129,7 @@
                     <!-- Consultation Type Field -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilType"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
@@ -148,7 +148,7 @@
                     <!-- Notes Field -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilNotes"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="24dp"
@@ -174,7 +174,7 @@
                         android:text="Submit Appointment"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        app:backgroundTint="@color/primary_color" />
+                        app:backgroundTint="@color/duhis_green" />
 
                     <!-- Info Note -->
                     <TextView
@@ -197,7 +197,7 @@
     </ScrollView>
 
     <!-- Progress Overlay -->
-    <View
+    <FrameLayout
         android:id="@+id/progressOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -225,6 +225,6 @@
 
         </LinearLayout>
 
-    </View>
+    </FrameLayout>
 
 </RelativeLayout>

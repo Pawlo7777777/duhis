@@ -100,11 +100,11 @@ public class RegisterActivity extends AppCompatActivity {
                     String uid = result.getUser().getUid();
                     User user = new User(uid, name, email, phone);
 
-                    FirebaseHelper.getInstance().users().document(uid).set(user)
+                    FirebaseHelper.getInstance(this).users().child(uid).setValue(user)
                             .addOnSuccessListener(v -> {
                                 showProgress(false);
                                 new SessionManager(this).createSession(uid, name, email, "user", phone);
-                                FirebaseHelper.getInstance().setUserOnline(uid);
+                                FirebaseHelper.getInstance(this).setUserOnline(uid);
 
                                 Intent intent = new Intent(this, MainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

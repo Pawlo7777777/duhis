@@ -3,6 +3,7 @@ package com.example.duhis.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -54,14 +55,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void checkAutoLogin() {
-        // Check both session and Firebase auth
         if (session.isLoggedIn() && auth.getCurrentUser() != null) {
-            String role = session.getRole();
-            navigateToDashboard(role);
+            navigateToDashboard(session.getRole());
         }
     }
 
     private void navigateToDashboard(String role) {
+        // Null-safe role check
         Intent intent;
         if ("admin".equals(role)) {
             intent = new Intent(this, AdminDashboardActivity.class);
@@ -136,41 +136,34 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loadUserAndNavigate(String uid) {
-        // Fetch user details from Firestore using FirebaseHelper
-        firebaseHelper.users().document(uid).get()
-                .addOnSuccessListener(doc -> {
+        firebaseHelper.users().child(uid).get()
+                .addOnSuccessListener(snap -> {
                     showProgress(false);
 
-                    if (!doc.exists()) {
+                    if (!snap.exists()) {
                         UIUtils.showToast(this, "User data not found. Please register.");
                         auth.signOut();
                         session.logout();
                         return;
                     }
 
-                    // Get user data
-                    String name  = doc.getString("fullName");
-                    String email = doc.getString("email");
-                    String role  = doc.getString("role");
-                    String phone = doc.getString("phoneNumber");
+                    String name  = snap.child("fullName").getValue(String.class);
+                    String email = snap.child("email").getValue(String.class);
+                    String role  = snap.child("role").getValue(String.class);
+                    String phone = snap.child("phoneNumber").getValue(String.class);
 
-                    // Save to session
                     session.createSession(uid, name, email, role, phone);
-
-                    // Update online status in Realtime Database
                     firebaseHelper.setUserOnline(uid);
-
-                    // Navigate based on role
                     navigateToDashboard(role);
                 })
                 .addOnFailureListener(e -> {
                     showProgress(false);
                     UIUtils.showToast(this, "Error loading user: " + e.getMessage());
+                    Log.d("Errorrr", e.getMessage());
                     auth.signOut();
                     session.logout();
                 });
     }
-
     private void showProgress(boolean show) {
         progressOverlay.setVisibility(show ? View.VISIBLE : View.GONE);
         btnLogin.setEnabled(!show);
@@ -181,10 +174,5 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // Check if user is already signed in when activity resumes
-        if (session.isLoggedIn() && auth.getCurrentUser() != null) {
-            String role = session.getRole();
-            navigateToDashboard(role);
-        }
     }
 }

@@ -2,8 +2,8 @@ package com.example.duhis.activities;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -12,9 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.Query;
+import com.google.firebase.database.DataSnapshot;
 import com.example.duhis.R;
 import com.example.duhis.adapters.AdminAppointmentAdapter;
 import com.example.duhis.models.Appointment;
@@ -23,6 +21,7 @@ import com.example.duhis.utils.FirebaseHelper;
 import com.example.duhis.utils.UIUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,11 +31,11 @@ public class ManageAppointmentsActivity extends AppCompatActivity {
     private RecyclerView rvAppointments;
     private SwipeRefreshLayout swipeRefresh;
     private TabLayout tabLayout;
-    private TextView tvEmpty;
+    private View tvEmpty;
 
     private AdminAppointmentAdapter adapter;
-    private final List<Appointment> allList    = new ArrayList<>();
-    private final List<Appointment> filtered   = new ArrayList<>();
+    private final List<Appointment> allList  = new ArrayList<>();
+    private final List<Appointment> filtered = new ArrayList<>();
     private FirebaseHelper fb;
     private String currentFilter = "Pending";
 
@@ -46,7 +45,7 @@ public class ManageAppointmentsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_appointments);
 
-        fb = FirebaseHelper.getInstance();
+        fb = FirebaseHelper.getInstance(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -59,8 +58,7 @@ public class ManageAppointmentsActivity extends AppCompatActivity {
         tabLayout      = findViewById(R.id.tabLayout);
         tvEmpty        = findViewById(R.id.tvEmpty);
 
-        adapter = new AdminAppointmentAdapter(filtered,
-                (appt, action) -> handleAction(appt, action));
+        adapter = new AdminAppointmentAdapter(filtered, this::handleAction);
         rvAppointments.setLayoutManager(new LinearLayoutManager(this));
         rvAppointments.setAdapter(adapter);
 
@@ -77,10 +75,8 @@ public class ManageAppointmentsActivity extends AppCompatActivity {
                 currentFilter = tab.getText() != null ? tab.getText().toString() : "Pending";
                 applyFilter();
             }
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {}
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {}
+            @Override public void onTabUnselected(TabLayout.Tab tab) {}
+            @Override public void onTabReselected(TabLayout.Tab tab) {}
         });
 
         loadAll();
@@ -88,23 +84,25 @@ public class ManageAppointmentsActivity extends AppCompatActivity {
 
     private void loadAll() {
         fb.appointments()
-                .orderBy("createdAt", Query.Direction.DESCENDING)
+                .orderByChild("createdAt")
                 .get()
                 .addOnSuccessListener(snap -> {
                     swipeRefresh.setRefreshing(false);
                     allList.clear();
-                    for (DocumentSnapshot doc : snap.getDocuments()) {
-                        Appointment a = doc.toObject(Appointment.class);
+                    for (DataSnapshot doc : snap.getChildren()) {
+                        Appointment a = doc.getValue(Appointment.class);
                         if (a != null) {
-                            a.setAppointmentId(doc.getId());
+                            a.setAppointmentId(doc.getKey());
                             allList.add(a);
                         }
                     }
+                    Collections.reverse(allList);
                     applyFilter();
                 })
                 .addOnFailureListener(e -> {
                     swipeRefresh.setRefreshing(false);
                     UIUtils.showToast(this, "Failed to load: " + e.getMessage());
+                    Log.d("ERRROOR", e.getMessage());
                 });
     }
 
@@ -113,15 +111,9 @@ public class ManageAppointmentsActivity extends AppCompatActivity {
         for (Appointment a : allList) {
             boolean include;
             switch (currentFilter) {
-                case "Pending":
-                    include = a.isPending();
-                    break;
-                case "Approved":
-                    include = a.isApproved();
-                    break;
-                default:
-                    include = true;
-                    break;
+                case "Pending":  include = a.isPending();  break;
+                case "Approved": include = a.isApproved(); break;
+                default:         include = true;           break;
             }
             if (include) filtered.add(a);
         }
@@ -129,67 +121,56 @@ public class ManageAppointmentsActivity extends AppCompatActivity {
         tvEmpty.setVisibility(filtered.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
-    /** action: "approve", "cancel", "complete" */
     private void handleAction(Appointment appt, String action) {
         String newStatus;
         switch (action) {
-            case "approve":
-                newStatus = Appointment.STATUS_APPROVED;
-                break;
-            case "cancel":
-                newStatus = Appointment.STATUS_CANCELLED;
-                break;
-            case "complete":
-                newStatus = Appointment.STATUS_COMPLETED;
-                break;
-            default:
-                newStatus = appt.getStatus();
-                break;
+            case "approve":  newStatus = Appointment.STATUS_APPROVED;  break;
+            case "cancel":   newStatus = Appointment.STATUS_CANCELLED; break;
+            case "complete": newStatus = Appointment.STATUS_COMPLETED; break;
+            default:         newStatus = appt.getStatus();             break;
         }
 
-        String title = "Update Status";
-        String message = "Mark this appointment as " + newStatus + "?";
-        UIUtils.showConfirmDialog(this, title, message, "Confirm", () -> {
-            Map<String, Object> update = new HashMap<>();
-            update.put("status", newStatus);
-            update.put("updatedAt", Timestamp.now());
+        UIUtils.showConfirmDialog(this, "Update Status",
+                "Mark this appointment as " + newStatus + "?", "Confirm", () -> {
+                    Map<String, Object> update = new HashMap<>();
+                    update.put("status",    newStatus);
+                    update.put("updatedAt", System.currentTimeMillis()); // ← long, not Timestamp
 
-            fb.appointments().document(appt.getAppointmentId()).update(update)
-                    .addOnSuccessListener(v -> {
-                        appt.setStatus(newStatus);
-                        applyFilter();
-                        notifyUser(appt, newStatus);
-                        UIUtils.showToast(this, "Status updated to " + newStatus);
-                    })
-                    .addOnFailureListener(e ->
-                            UIUtils.showToast(this, "Update failed: " + e.getMessage()));
-        });
+                    fb.appointments().child(appt.getAppointmentId()).updateChildren(update)
+                            .addOnSuccessListener(v -> {
+                                appt.setStatus(newStatus);
+                                applyFilter();
+                                notifyUser(appt, newStatus);
+                                UIUtils.showToast(this, "Status updated to " + newStatus);
+                            })
+                            .addOnFailureListener(e ->
+                                    UIUtils.showToast(this, "Update failed: " + e.getMessage()));
+                });
     }
 
     private void notifyUser(Appointment appt, String newStatus) {
         String msg = "Your appointment on " + appt.getDate() + " at " + appt.getTime()
                 + " has been " + newStatus.toLowerCase() + ".";
 
-        // Create notification using the correct constructor
         Notification notif = new Notification(
-                "Appointment " + newStatus,  // title
-                msg,                          // message
-                Notification.TYPE_APPOINTMENT // type
+                "Appointment " + newStatus,
+                msg,
+                Notification.TYPE_APPOINTMENT
         );
         notif.setTargetUserId(appt.getUserId());
         notif.setRelatedId(appt.getAppointmentId());
 
-        fb.notifications().add(notif).addOnSuccessListener(ref -> {
-            // Update unread count in Realtime Database
-            fb.unreadCounts(appt.getUserId()).get().addOnSuccessListener(snap -> {
-                Long count = snap.getValue(Long.class);
-                fb.unreadCounts(appt.getUserId()).setValue(count != null ? count + 1 : 1);
-            }).addOnFailureListener(e -> {
-                // If no previous count exists, start from 1
-                fb.unreadCounts(appt.getUserId()).setValue(1);
-            });
-        }).addOnFailureListener(e -> {
-            UIUtils.showToast(this, "Failed to send notification: " + e.getMessage());
-        });
+        String newKey = fb.notifications().push().getKey(); // ← push() not add()
+        fb.notifications().child(newKey).setValue(notif)
+                .addOnSuccessListener(unused -> {
+                    fb.unreadCounts(appt.getUserId()).get()
+                            .addOnSuccessListener(snap -> {
+                                Long count = snap.getValue(Long.class);
+                                fb.unreadCounts(appt.getUserId())
+                                        .setValue(count != null ? count + 1 : 1);
+                            });
+                })
+                .addOnFailureListener(e ->
+                        UIUtils.showToast(this, "Failed to send notification: " + e.getMessage()));
     }
 }

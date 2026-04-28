@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+
+    <item android:duration="600">
+        <layer-list>
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="#1A4A70" />
+                    <corners android:radius="2dp" />
+                </shape>
+            </item>
+            <item android:right="42dp">
+                <shape android:shape="rectangle">
+                    <solid android:color="#85B7EB" />
+                    <corners android:radius="2dp" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
+    <item android:duration="600">
+        <layer-list>
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="#1A4A70" />
+                    <corners android:radius="2dp" />
+                </shape>
+            </item>
+            <item android:left="14dp" android:right="28dp">
+                <shape android:shape="rectangle">
+                    <solid android:color="#85B7EB" />
+                    <corners android:radius="2dp" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
+    <item android:duration="600">
+        <layer-list>
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="#1A4A70" />
+                    <corners android:radius="2dp" />
+                </shape>
+            </item>
+            <item android:left="28dp" android:right="14dp">
+                <shape android:shape="rectangle">
+                    <solid android:color="#85B7EB" />
+                    <corners android:radius="2dp" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
+    <item android:duration="600">
+        <layer-list>
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="#1A4A70" />
+                    <corners android:radius="2dp" />
+                </shape>
+            </item>
+            <item android:left="42dp">
+                <shape android:shape="rectangle">
+                    <solid android:color="#85B7EB" />
+                    <corners android:radius="2dp" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
+</animation-list>

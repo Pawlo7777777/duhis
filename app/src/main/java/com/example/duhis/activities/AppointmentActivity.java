@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -22,8 +21,6 @@ import com.example.duhis.utils.SessionManager;
 import com.example.duhis.utils.UIUtils;
 
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 
 public class AppointmentActivity extends AppCompatActivity {
 
@@ -48,7 +45,7 @@ public class AppointmentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointment);
 
-        fb      = FirebaseHelper.getInstance();
+        fb      = FirebaseHelper.getInstance(this); // ← pass context
         session = new SessionManager(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -80,9 +77,8 @@ public class AppointmentActivity extends AppCompatActivity {
     }
 
     private void setupTypeDropdown() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_dropdown_item_1line, CONSULTATION_TYPES);
-        actvType.setAdapter(adapter);
+        actvType.setAdapter(new ArrayAdapter<>(
+                this, android.R.layout.simple_dropdown_item_1line, CONSULTATION_TYPES));
     }
 
     private void setupDateTimePickers() {
@@ -99,21 +95,20 @@ public class AppointmentActivity extends AppCompatActivity {
 
     private void showDatePicker() {
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DAY_OF_MONTH, 1); // minimum: tomorrow
+        cal.add(Calendar.DAY_OF_MONTH, 1);
         new DatePickerDialog(this, (dp, y, m, d) -> {
-            String date = String.format("%04d-%02d-%02d", y, m + 1, d);
+            String date    = String.format("%04d-%02d-%02d", y, m + 1, d);
             String display = String.format("%s %02d, %04d",
                     new java.text.DateFormatSymbols().getMonths()[m], d, y);
             etDate.setText(display);
             etDate.setTag(date);
-        }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
-                .show();
+        }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)).show();
     }
 
     private void showTimePicker() {
         new TimePickerDialog(this, (tp, h, min) -> {
-            String amPm = h >= 12 ? "PM" : "AM";
-            int hour12  = h == 0 ? 12 : (h > 12 ? h - 12 : h);
+            String amPm  = h >= 12 ? "PM" : "AM";
+            int hour12   = h == 0 ? 12 : (h > 12 ? h - 12 : h);
             etTime.setText(String.format("%02d:%02d %s", hour12, min, amPm));
         }, 8, 0, false).show();
     }
@@ -127,7 +122,6 @@ public class AppointmentActivity extends AppCompatActivity {
 
         tilDate.setError(null); tilTime.setError(null); tilType.setError(null);
         boolean valid = true;
-
         if (dateDisplay.isEmpty()) { tilDate.setError("Select a date"); valid = false; }
         if (time.isEmpty())        { tilTime.setError("Select a time"); valid = false; }
         if (type.isEmpty())        { tilType.setError("Select consultation type"); valid = false; }
@@ -139,9 +133,11 @@ public class AppointmentActivity extends AppCompatActivity {
                 session.getUid(), session.getName(), session.getPhone(),
                 type, dateValue, time, notes);
 
-        fb.appointments().add(appt)
-                .addOnSuccessListener(ref -> {
-                    saveNotification(ref.getId(), type, dateDisplay, time);
+        // ── Realtime Database: push() generates a unique key ──
+        String apptKey = fb.appointments().push().getKey();
+        fb.appointments().child(apptKey).setValue(appt)
+                .addOnSuccessListener(unused -> {
+                    saveNotification(apptKey, type, dateDisplay, time);
                     showProgress(false);
                     UIUtils.showToast(this, "Appointment booked successfully!");
                     finish();
@@ -160,13 +156,17 @@ public class AppointmentActivity extends AppCompatActivity {
         notif.setTargetUserId(session.getUid());
         notif.setRelatedId(apptId);
 
-        fb.notifications().add(notif).addOnSuccessListener(ref -> {
-            // Increment RTDB unread count
-            fb.unreadCounts(session.getUid()).get().addOnSuccessListener(snap -> {
-                Long current = snap.getValue(Long.class);
-                fb.unreadCounts(session.getUid()).setValue(current != null ? current + 1 : 1);
-            });
-        });
+        // ── Realtime Database: push() + setValue() ──
+        String notifKey = fb.notifications().push().getKey();
+        fb.notifications().child(notifKey).setValue(notif)
+                .addOnSuccessListener(unused -> {
+                    fb.unreadCounts(session.getUid()).get()
+                            .addOnSuccessListener(snap -> {
+                                Long current = snap.getValue(Long.class);
+                                fb.unreadCounts(session.getUid())
+                                        .setValue(current != null ? current + 1 : 1);
+                            });
+                });
     }
 
     private void showProgress(boolean show) {

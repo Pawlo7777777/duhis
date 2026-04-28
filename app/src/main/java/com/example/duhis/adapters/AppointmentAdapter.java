@@ -76,7 +76,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         TextView tvType, tvDate, tvStatus;
         VH(View v) {
             super(v);
-            card     = v.findViewById(R.id.card);
+            card     = v.findViewById(R.id.cardAppointment);
             tvType   = v.findViewById(R.id.tvType);
             tvDate   = v.findViewById(R.id.tvDate);
             tvStatus = v.findViewById(R.id.tvStatus);

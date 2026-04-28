@@ -28,7 +28,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/ic_patient"
-                app:tint="@color/primary_color" />
+                app:tint="@color/black" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -142,7 +142,7 @@
             android:layout_height="wrap_content"
             android:text="General Checkup"
             android:textSize="14sp"
-            android:textColor="@color/primary_color"
+            android:textColor="@color/duhis_green"
             android:layout_marginBottom="8dp" />
 
         <!-- Notes (if any) -->

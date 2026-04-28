@@ -1,5 +1,6 @@
 package com.example.duhis.adapters;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.duhis.R;
@@ -47,8 +47,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             holder.tvMessage.setText(notification.getMessage() != null ? notification.getMessage() : "");
 
             // Set timestamp
-            if (notification.getCreatedAt() != null) {
-                holder.tvTime.setText(dateFormat.format(notification.getCreatedAt().toDate()));
+            if (notification.getCreatedAt() != 0) {
+                holder.tvTime.setText(dateFormat.format(new java.util.Date(notification.getCreatedAt())));
             } else {
                 holder.tvTime.setText("Just now");
             }
@@ -112,10 +112,12 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        CardView cardNotification;
-        ImageView ivIcon, ivUnreadIndicator;
+        com.google.android.material.card.MaterialCardView cardNotification;
+        ImageView ivIcon;
+        View ivUnreadIndicator;
         TextView tvTitle, tvMessage, tvTime;
 
+        @SuppressLint("WrongViewCast")
         ViewHolder(View itemView) {
             super(itemView);
             cardNotification = itemView.findViewById(R.id.cardNotification);

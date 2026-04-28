@@ -6,7 +6,6 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- Title -->
     <TextView
         android:id="@+id/tvSheetTitle"
         android:layout_width="wrap_content"
@@ -17,10 +16,68 @@
         android:textColor="@color/text_primary_color"
         android:layout_marginBottom="16dp" />
 
-    <!-- Title Input -->
+    <!-- Cover Image Picker -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cover Image"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary_color"
+        android:layout_marginBottom="8dp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_marginBottom="16dp">
+
+        <ImageView
+            android:id="@+id/ivCoverPreview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/img_health_placeholder"
+            android:background="@color/background_color" />
+
+        <LinearLayout
+            android:id="@+id/llPickImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="#88000000"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_add"
+                app:tint="@color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Tap to select image"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <!-- Upload progress -->
+        <ProgressBar
+            android:id="@+id/pbUpload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilTitle"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -35,10 +92,9 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Category Input -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilCategory"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -54,10 +110,9 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Summary Input -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilSummary"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -73,10 +128,9 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Content Input -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilContent"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -93,7 +147,6 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Featured Switch -->
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/swFeatured"
         android:layout_width="match_parent"
@@ -102,7 +155,6 @@
         android:textSize="14sp"
         android:layout_marginBottom="24dp" />
 
-    <!-- Save Button -->
     <Button
         android:id="@+id/btnSave"
         android:layout_width="match_parent"

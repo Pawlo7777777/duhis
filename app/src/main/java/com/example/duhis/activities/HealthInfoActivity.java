@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.example.duhis.R;
@@ -23,6 +24,7 @@ import com.example.duhis.models.HealthInfo;
 import com.example.duhis.utils.FirebaseHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -31,7 +33,7 @@ public class HealthInfoActivity extends AppCompatActivity {
     private RecyclerView rvHealthInfo;
     private SwipeRefreshLayout swipeRefresh;
     private EditText etSearch;
-    private TextView tvEmpty;
+    private View tvEmpty;
     private HealthInfoAdapter adapter;
     private final List<HealthInfo> allList      = new ArrayList<>();
     private final List<HealthInfo> filteredList = new ArrayList<>();
@@ -74,19 +76,22 @@ public class HealthInfoActivity extends AppCompatActivity {
     }
 
     private void loadHealthInfo() {
-        FirebaseHelper.getInstance().healthInfo()
-                .orderBy("createdAt", Query.Direction.DESCENDING)
+        FirebaseHelper.getInstance(this)  // or requireContext() if inside a Fragment
+                .healthInfo()
+                .orderByChild("createdAt")
+                .limitToLast(50)
                 .get()
                 .addOnSuccessListener(snap -> {
                     swipeRefresh.setRefreshing(false);
                     allList.clear();
-                    for (DocumentSnapshot doc : snap.getDocuments()) {
-                        HealthInfo h = doc.toObject(HealthInfo.class);
+                    for (DataSnapshot doc : snap.getChildren()) {
+                        HealthInfo h = doc.getValue(HealthInfo.class);
                         if (h != null) {
-                            h.setInfoId(doc.getId());
+                            h.setInfoId(doc.getKey());
                             allList.add(h);
                         }
                     }
+                    Collections.reverse(allList); // newest first
                     filter(etSearch.getText().toString());
                 })
                 .addOnFailureListener(e -> swipeRefresh.setRefreshing(false));

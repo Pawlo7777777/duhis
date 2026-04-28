@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.Timestamp;
+import com.google.firebase.database.DataSnapshot;
 import com.example.duhis.R;
 import com.example.duhis.utils.FirebaseHelper;
 import com.example.duhis.utils.SessionManager;
@@ -36,7 +36,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        fb      = FirebaseHelper.getInstance();
+        fb      = FirebaseHelper.getInstance(this); // ← pass context
         session = new SessionManager(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -52,14 +52,14 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        etName        = findViewById(R.id.etName);
-        etPhone       = findViewById(R.id.etPhone);
-        etDob         = findViewById(R.id.etDob);
-        etAddress     = findViewById(R.id.etAddress);
-        etAllergies   = findViewById(R.id.etAllergies);
-        actvGender    = findViewById(R.id.actvGender);
-        actvBloodType = findViewById(R.id.actvBloodType);
-        btnSave       = findViewById(R.id.btnSave);
+        etName          = findViewById(R.id.etName);
+        etPhone         = findViewById(R.id.etPhone);
+        etDob           = findViewById(R.id.etDob);
+        etAddress       = findViewById(R.id.etAddress);
+        etAllergies     = findViewById(R.id.etAllergies);
+        actvGender      = findViewById(R.id.actvGender);
+        actvBloodType   = findViewById(R.id.actvBloodType);
+        btnSave         = findViewById(R.id.btnSave);
         progressOverlay = findViewById(R.id.progressOverlay);
 
         actvGender.setAdapter(new ArrayAdapter<>(this,
@@ -73,26 +73,30 @@ public class ProfileActivity extends AppCompatActivity {
         if (uid == null) return;
         progressOverlay.setVisibility(View.VISIBLE);
 
-        fb.users().document(uid).get().addOnSuccessListener(doc -> {
-            progressOverlay.setVisibility(View.GONE);
-            if (!doc.exists()) return;
-            etName.setText(doc.getString("fullName"));
-            etPhone.setText(doc.getString("phoneNumber"));
-            etDob.setText(doc.getString("dateOfBirth"));
-            etAddress.setText(doc.getString("address"));
-            etAllergies.setText(doc.getString("allergies"));
-            actvGender.setText(doc.getString("gender"), false);
-            actvBloodType.setText(doc.getString("bloodType"), false);
-        }).addOnFailureListener(e -> progressOverlay.setVisibility(View.GONE));
+        fb.users().child(uid).get()
+                .addOnSuccessListener(snap -> {
+                    progressOverlay.setVisibility(View.GONE);
+                    if (!snap.exists()) return;
+
+                    etName.setText(snap.child("fullName").getValue(String.class));
+                    etPhone.setText(snap.child("phoneNumber").getValue(String.class));
+                    etDob.setText(snap.child("dateOfBirth").getValue(String.class));
+                    etAddress.setText(snap.child("address").getValue(String.class));
+                    etAllergies.setText(snap.child("allergies").getValue(String.class));
+                    actvGender.setText(snap.child("gender").getValue(String.class), false);
+                    actvBloodType.setText(snap.child("bloodType").getValue(String.class), false);
+                })
+                .addOnFailureListener(e -> progressOverlay.setVisibility(View.GONE));
     }
 
     private void saveProfile() {
-        String name   = text(etName);
-        String phone  = text(etPhone);
+        String name  = text(etName);
+        String phone = text(etPhone);
 
         if (name.isEmpty()) { UIUtils.showToast(this, "Name cannot be empty"); return; }
 
         showProgress(true);
+
         Map<String, Object> updates = new HashMap<>();
         updates.put("fullName",    name);
         updates.put("phoneNumber", phone);
@@ -101,9 +105,9 @@ public class ProfileActivity extends AppCompatActivity {
         updates.put("allergies",   text(etAllergies));
         updates.put("gender",      actvGender.getText().toString());
         updates.put("bloodType",   actvBloodType.getText().toString());
-        updates.put("updatedAt",   Timestamp.now());
+        updates.put("updatedAt",   System.currentTimeMillis()); // ← long, not Timestamp
 
-        fb.users().document(session.getUid()).update(updates)
+        fb.users().child(session.getUid()).updateChildren(updates)
                 .addOnSuccessListener(v -> {
                     showProgress(false);
                     session.updateName(name);

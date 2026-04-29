@@ -35,7 +35,6 @@ public class SendNotificationActivity extends AppCompatActivity {
     private Button btnSend;
     private View progressOverlay;
     private TextView tvPreview;
-
     private FirebaseHelper fb;
 
     private static final String[] NOTIFICATION_TYPES = {

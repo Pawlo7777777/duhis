@@ -36,7 +36,7 @@ public class HealthInfoFragment extends Fragment {
     private RecyclerView rvHealthInfo;
     private SwipeRefreshLayout swipeRefresh;
     private EditText etSearch;
-    private TextView tvEmpty;
+    private View tvEmpty;
 
     private HealthInfoAdapter adapter;
     private final List<HealthInfo> allList      = new ArrayList<>();

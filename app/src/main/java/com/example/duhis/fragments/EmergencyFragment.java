@@ -78,10 +78,10 @@ public class EmergencyFragment extends Fragment {
     /** Seed default contacts if Realtime DB is empty */
     private void addDefaultContacts() {
         contactList.clear();
-        contactList.add(new EmergencyContact("Barangay Health Center", "Dagohoy BHC",             "09XXXXXXXXX", "health_center", 1));
-        contactList.add(new EmergencyContact("Municipal Hospital",     "Dagohoy Municipal Hospital", "09XXXXXXXXX", "hospital",      2));
-        contactList.add(new EmergencyContact("Ambulance",              "Emergency Ambulance",        "09XXXXXXXXX", "ambulance",     3));
-        contactList.add(new EmergencyContact("BFP",                    "Bureau of Fire Protection",  "09XXXXXXXXX", "fire",          4));
+        contactList.add(new EmergencyContact("Barangay Health Center", "Dagohoy BHC",             "09123456789", "health_center", 1));
+        contactList.add(new EmergencyContact("Municipal Hospital",     "Dagohoy Municipal Hospital", "09123456789", "hospital",      2));
+        contactList.add(new EmergencyContact("Ambulance",              "Emergency Ambulance",        "09123456789", "ambulance",     3));
+        contactList.add(new EmergencyContact("BFP",                    "Bureau of Fire Protection",  "09123456789", "fire",          4));
         contactList.add(new EmergencyContact("PNP",                    "Philippine National Police", "911",          "police",        5));
         adapter.notifyDataSetChanged();
     }

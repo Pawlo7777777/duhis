@@ -30,8 +30,8 @@
                 <View
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:backgroundTint="@color/duhis_green"
-                    android:background="@drawable/ic_health_logo" />
+                    android:backgroundTint="@color/duhis_red"
+                    android:background="@drawable/ic_hospital" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -40,7 +40,16 @@
                     android:text="DUHIS"
                     android:textSize="32sp"
                     android:textStyle="bold"
-                    android:textColor="@color/duhis_green_dark" />
+                    android:textColor="@color/white" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Dagohoy Unified Health Information System"
+                    android:textSize="14sp"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:textAlignment="center" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -51,13 +60,6 @@
                     android:textStyle="bold"
                     android:textColor="#212121" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Join DUHIS today"
-                    android:textSize="14sp"
-                    android:textColor="@color/black" />
 
             </LinearLayout>
 
@@ -73,8 +75,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="#4BC790"
+                    android:background="@color/white"
                     android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Welcome Back!"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary_color"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sign up to join"
+                        android:textSize="14sp"
+                        android:textColor="@color/black"
+                        android:layout_marginBottom="24dp" />
 
                     <!-- Full Name Field -->
                     <com.google.android.material.textfield.TextInputLayout

@@ -29,8 +29,8 @@
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    app:tint="@color/duhis_green_dark"
-                    android:src="@drawable/ic_health_logo"
+                    app:tint="@color/duhis_red"
+                    android:src="@drawable/ic_hospital"
                     android:contentDescription="@string/logo" />
 
                 <TextView
@@ -40,7 +40,7 @@
                     android:text="DUHIS"
                     android:textSize="32sp"
                     android:textStyle="bold"
-                    android:textColor="@color/duhis_green_dark" />
+                    android:textColor="@color/white" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -48,9 +48,18 @@
                     android:layout_marginTop="8dp"
                     android:text="Dagohoy Unified Health Information System"
                     android:textSize="14sp"
-                    android:textColor="@color/duhis_green_dark"
+                    android:textColor="@color/white"
                     android:gravity="center"
                     android:textAlignment="center" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Login Account"
+                    android:textSize="28sp"
+                    android:textStyle="bold"
+                    android:textColor="#212121" />
 
             </LinearLayout>
 
@@ -66,7 +75,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="#4BC790"
+                    android:background="@color/white"
                     android:padding="20dp">
 
                     <TextView

@@ -226,7 +226,7 @@ public class ManageHealthInfoActivity extends AppCompatActivity {
             updates.put("summary",    summary);
             updates.put("content",    content);
             updates.put("category",   category);
-            updates.put("isFeatured", featured);
+            updates.put("featured", featured);
             updates.put("updatedAt",  System.currentTimeMillis());
             if (imageUrl != null) updates.put("imageUrl", imageUrl);
 

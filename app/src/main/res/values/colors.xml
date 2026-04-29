@@ -15,7 +15,7 @@
     <color name="error_color">#D32F2F</color>
     <!-- Add these to your colors.xml -->
     <color name="primary_dark">#3700B3</color>
-
+    <color name="ic_hospital_color">#1976D2</color>
 
     <!-- Accent -->
     <color name="duhis_blue">#1565C0</color>

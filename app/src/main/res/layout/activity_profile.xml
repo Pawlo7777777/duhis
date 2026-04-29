@@ -10,7 +10,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/primary_color"
+        android:background="@color/duhis_green_dark"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:titleTextColor="@color/white"
         app:navigationIcon="@drawable/ic_arrow_back" />
@@ -43,18 +43,49 @@
                     android:gravity="center"
                     android:padding="24dp">
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/ivProfileImage"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:src="@drawable/ic_default_avatar"
-                        app:civ_border_width="2dp"
-                        app:civ_border_color="@color/primary_color" />
+                    <!-- Avatar + edit icon overlay -->
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/ivProfileImage"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:src="@drawable/ic_default_avatar"
+                            android:clickable="true"
+                            android:focusable="true" />
+
+                        <!-- Camera badge (bottom-right corner) -->
+                        <ImageView
+                            android:id="@+id/ivEditPhoto"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_gravity="bottom|end"
+                            android:layout_marginEnd="0dp"
+                            android:layout_marginBottom="0dp"
+                            android:src="@drawable/ic_camera"
+                            android:background="@drawable/bg_camera_badge"
+                            android:padding="6dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:contentDescription="Change profile photo" />
+
+                    </FrameLayout>
+
+                    <!-- Upload progress (hidden by default) -->
+                    <ProgressBar
+                        android:id="@+id/uploadProgressBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:visibility="gone"
+                        android:indeterminateTint="@color/duhis_green" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
                         android:text="Profile Information"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -63,8 +94,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Update your personal details"
-                        android:textSize="14sp"
+                        android:text="Tap photo to change"
+                        android:textSize="13sp"
                         android:textColor="@color/text_secondary_color" />
 
                 </LinearLayout>
@@ -94,10 +125,9 @@
                         android:textColor="@color/text_primary_color"
                         android:layout_marginBottom="16dp" />
 
-                    <!-- Full Name -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilName"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        style="@style/Widget.DUHIS.TextInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
@@ -112,10 +142,9 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Phone Number -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilPhone"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        style="@style/Widget.DUHIS.TextInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
@@ -130,10 +159,9 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Date of Birth -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilDob"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        style="@style/Widget.DUHIS.TextInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
@@ -148,13 +176,12 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Gender -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilGender"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        style="@style/Widget.DUHIS.TextInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginBottom="0dp"
                         app:startIconDrawable="@drawable/ic_gender"
                         app:endIconMode="dropdown_menu">
 
@@ -194,10 +221,9 @@
                         android:textColor="@color/text_primary_color"
                         android:layout_marginBottom="16dp" />
 
-                    <!-- Blood Type -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilBloodType"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        style="@style/Widget.DUHIS.TextInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
@@ -213,10 +239,9 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Address -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilAddress"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        style="@style/Widget.DUHIS.TextInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
@@ -232,13 +257,12 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Allergies -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilAllergies"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        style="@style/Widget.DUHIS.TextInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginBottom="0dp"
                         app:startIconDrawable="@drawable/ic_allergy">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -270,7 +294,7 @@
     </ScrollView>
 
     <!-- Progress Overlay -->
-    <View
+    <FrameLayout
         android:id="@+id/progressOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -292,12 +316,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Updating profile..."
+                android:text="Saving profile..."
                 android:textColor="@color/white"
                 android:textSize="14sp" />
 
         </LinearLayout>
 
-    </View>
+    </FrameLayout>
 
 </RelativeLayout>

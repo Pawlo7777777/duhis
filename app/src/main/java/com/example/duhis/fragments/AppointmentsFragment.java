@@ -34,7 +34,7 @@ public class AppointmentsFragment extends Fragment {
     private RecyclerView rvAppointments;
     private SwipeRefreshLayout swipeRefresh;
     private TabLayout tabLayout;
-    private TextView tvEmpty;
+    private View tvEmpty;
     private FloatingActionButton fabBook;
 
     private AppointmentAdapter adapter;

@@ -18,12 +18,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.bumptech.glide.Glide;
 import com.example.duhis.activities.LoginActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.Query;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.example.duhis.R;
 import com.example.duhis.activities.AppointmentActivity;
 import com.example.duhis.activities.HealthInfoActivity;
@@ -37,6 +38,8 @@ import com.example.duhis.utils.UIUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeFragment extends Fragment {
 
@@ -55,6 +58,10 @@ public class HomeFragment extends Fragment {
     private final List<HealthInfo> featuredList = new ArrayList<>();
     private FirebaseHelper fb;
     private SessionManager session;
+
+    // Drawer header views
+    private CircleImageView navProfileImage;
+    private TextView navUserName, navUserEmail;
 
     @Nullable
     @Override
@@ -78,6 +85,7 @@ public class HomeFragment extends Fragment {
         setupCardClicks();
         setupSeeAll();
         loadFeaturedHealth();
+        updateDrawerHeader(); // Load drawer header with user data including avatar
 
         swipeRefresh.setColorSchemeResources(R.color.duhis_green);
         swipeRefresh.setOnRefreshListener(this::loadFeaturedHealth);
@@ -132,6 +140,14 @@ public class HomeFragment extends Fragment {
     // ─────────────────────────────────────────
 
     private void setupDrawer() {
+        // Initialize drawer header views
+        View headerView = navigationView.getHeaderView(0);
+        if (headerView != null) {
+            navProfileImage = headerView.findViewById(R.id.navProfileImage);
+            navUserName = headerView.findViewById(R.id.navUserName);
+            navUserEmail = headerView.findViewById(R.id.navUserEmail);
+        }
+
         // Toggle button opens/closes the drawer
         btnDrawerToggle.setOnClickListener(v -> {
             if (drawerLayout.isDrawerOpen(navigationView)) {
@@ -170,19 +186,75 @@ public class HomeFragment extends Fragment {
             }
             return false;
         });
+    }
 
-        // Update the drawer header with user info
-        View headerView = navigationView.getHeaderView(0);
-        if (headerView != null) {
-            TextView navUserName = headerView.findViewById(R.id.navUserName);
-            TextView navUserEmail = headerView.findViewById(R.id.navUserEmail);
-            if (navUserName != null && session.getName() != null) {
-                navUserName.setText(session.getName());
-            }
-            if (navUserEmail != null && session.getEmail() != null) {
-                navUserEmail.setText(session.getEmail());
-            }
+    private void updateDrawerHeader() {
+        if (navUserName != null && session.getName() != null) {
+            navUserName.setText(session.getName());
         }
+        if (navUserEmail != null && session.getEmail() != null) {
+            navUserEmail.setText(session.getEmail());
+        }
+
+        // Load profile picture from session first
+        String avatarUrl = session.getAvatarUrl();
+        if (avatarUrl != null && !avatarUrl.isEmpty() && navProfileImage != null) {
+            Glide.with(this)
+                    .load(avatarUrl)
+                    .placeholder(R.drawable.ic_default_avatar)
+                    .error(R.drawable.ic_default_avatar)
+                    .circleCrop()
+                    .into(navProfileImage);
+        } else if (navProfileImage != null) {
+            navProfileImage.setImageResource(R.drawable.ic_default_avatar);
+        }
+
+        // Then fetch latest from Firebase to ensure we have the most up-to-date data
+        loadLatestDrawerDataFromFirebase();
+    }
+
+    private void loadLatestDrawerDataFromFirebase() {
+        String uid = session.getUid();
+        if (uid == null) return;
+
+        fb.users().child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.exists() || getActivity() == null) return;
+
+                // Update name if changed
+                String fullName = snapshot.child("fullName").getValue(String.class);
+                if (fullName != null && !fullName.isEmpty() && !fullName.equals(session.getName())) {
+                    if (navUserName != null) navUserName.setText(fullName);
+                    session.updateName(fullName);
+
+                    // Also update greeting if needed
+                    if (tvUserName != null) tvUserName.setText(fullName);
+                }
+
+                // Update avatar URL if changed
+                String avatarUrl = snapshot.child("profileImageUrl").getValue(String.class);
+                if (avatarUrl != null && !avatarUrl.isEmpty() && navProfileImage != null) {
+                    // Only update if the URL is different from what we have in session
+                    if (!avatarUrl.equals(session.getAvatarUrl())) {
+                        session.updateAvatar(avatarUrl);
+                        // Reload avatar with new URL
+                        Glide.with(HomeFragment.this)
+                                .load(avatarUrl)
+                                .placeholder(R.drawable.ic_default_avatar)
+                                .error(R.drawable.ic_default_avatar)
+                                .circleCrop()
+                                .into(navProfileImage);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Keep using session data, already displayed
+                Log.e("HomeFragment", "Failed to load drawer data: " + error.getMessage());
+            }
+        });
     }
 
     // ─────────────────────────────────────────
@@ -273,6 +345,7 @@ public class HomeFragment extends Fragment {
                     Log.d("EERRRRRROORRR", e.getMessage());
                 });
     }
+
     private void confirmLogout() {
         UIUtils.showConfirmDialog(
                 requireContext(),
@@ -289,5 +362,16 @@ public class HomeFragment extends Fragment {
                     startActivity(i);
                 }
         );
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Refresh drawer header when returning to home fragment
+        updateDrawerHeader();
+        // Also refresh greeting in case name was updated
+        if (tvUserName != null && session.getName() != null) {
+            tvUserName.setText(session.getName());
+        }
     }
 }

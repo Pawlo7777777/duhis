@@ -70,7 +70,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
             } else if (id == R.id.nav_users) {
                  startActivity(new Intent(this, ManageUsersActivity.class));
             } else if (id == R.id.nav_notifications) {
-                // startActivity(new Intent(this, SendNotificationActivity.class));
+                 startActivity(new Intent(this, SendNotificationActivity.class));
             } else if (id == R.id.nav_logout) {
                 confirmLogout();
             }

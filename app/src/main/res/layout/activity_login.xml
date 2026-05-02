@@ -152,12 +152,13 @@
                     <!-- Login Button -->
                     <Button
                         android:id="@+id/btnLogin"
-                        style="@style/Widget.MaterialComponents.Button"
+                        style="@style/Widget.Material3.Button.TextButton"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
                         android:text="Login"
                         android:textSize="16sp"
                         android:textStyle="bold"
+                        android:textColor="@color/white"
                         android:backgroundTint="@color/duhis_green_medium"
                         android:layout_marginBottom="16dp" />
 
